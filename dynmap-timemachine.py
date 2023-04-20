@@ -1,4 +1,4 @@
-#!/usr/bin/env python
+#!/usr/local/bin/python3
 
 import logging
 import argparse
@@ -30,6 +30,7 @@ if __name__ == '__main__':
     parser.add_argument('-q', '--quiet', action='store_true')
     parser.add_argument('-v', '--verbose', action='store_true')
     parser.add_argument('-vv', '--verbose-debug', action='store_true')
+    parser.add_argument('-d', '--force-day', action='store_true')
 
     args = parser.parse_args()
 
@@ -40,7 +41,7 @@ if __name__ == '__main__':
     if args.verbose_debug:
         logging.basicConfig(level=logging.DEBUG)
 
-    logging.debug('args: %s', str(args))
+    logging.info('args: %s', str(args))
 
 
     dm = dynmap.DynMap(args.base_url)
@@ -87,7 +88,7 @@ if __name__ == '__main__':
         tm = time_machine.TimeMachine(dm)
         dest = args.dest
         zoom = int(args.zoom)
-        img = tm.capture_single(dm_map, m_loc.to_tile_location(zoom), size)
+        img = tm.capture_single(dm_map, m_loc.to_tile_location(zoom), size, day=args.force_day)
 
         if os.path.isdir(dest):
             files = list(glob.iglob(os.path.join(dest, '*.png')))

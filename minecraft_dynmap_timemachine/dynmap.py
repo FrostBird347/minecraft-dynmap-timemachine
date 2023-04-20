@@ -125,13 +125,15 @@ class Map(object):
     # def is_known_shader(shader_name):
     #     return shader_name in Map.SHADERS
 
-    def image_url(self, t_loc):
+    def image_url(self, t_loc, force_day=False):
         zoom = t_loc.zoom
         chunk_x = math.floor(t_loc.x / 32.0)
         chunk_y = math.floor(t_loc.y / 32.0)
         dashes = ('' if zoom == 0 else ('z' * zoom) + '_')
 
         image_url = '/tiles/%s/%s/%d_%d/%s%d_%d.png' % (self._world, self.prefix, chunk_x, chunk_y, dashes, t_loc.x, t_loc.y)
+        if force_day:
+            image_url = '/tiles/%s/%s_day/%d_%d/%s%d_%d.png' % (self._world, self.prefix, chunk_x, chunk_y, dashes, t_loc.x, t_loc.y)
         return image_url
 
     @property

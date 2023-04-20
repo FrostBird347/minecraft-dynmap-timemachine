@@ -13,7 +13,7 @@ class TimeMachine(object):
         self._dm_map = dm_map
         # self.dynmap = dynmap.DynMap(url)
 
-    def capture_single(self, map, t_loc, size, pause=0.25):
+    def capture_single(self, map, t_loc, size, pause=0.25, day=False):
         from_tile, to_tile = t_loc.make_range(size[0], size[1])
         zoomed_scale = projection.zoomed_scale(t_loc.zoom)
 
@@ -28,7 +28,7 @@ class TimeMachine(object):
 
         for x in range(from_tile.x, to_tile.x, zoomed_scale):
             for y in range(from_tile.y, to_tile.y, zoomed_scale):
-                img_rel_path = map.image_url(projection.TileLocation(x, y, t_loc.zoom))
+                img_rel_path = map.image_url(projection.TileLocation(x, y, t_loc.zoom), force_day=day)
                 img_url = self._dm_map.url + img_rel_path
 
                 processed += 1
