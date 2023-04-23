@@ -34,11 +34,14 @@ class TimeMachine(object):
                 processed += 1
                 logging.info('tile %d/%d [%d, %d]', processed, total_tiles, x, y)
 
-                try:
-                    img_data = simple_downloader.download(img_url, True)
-                except Exception as e:
-                    logging.info('Unable to download "%s": %s', img_url, str(e))
-                    continue
+                failedDownload = True
+                while failedDownload:
+                    try:
+                        img_data = simple_downloader.download(img_url, True)
+                        failedDownload = False
+                    except Exception as e:
+                        logging.info('Unable to download "%s": %s', img_url, str(e))
+                        continue
 
                 stream = io.BytesIO(img_data)
                 im = Image.open(stream)

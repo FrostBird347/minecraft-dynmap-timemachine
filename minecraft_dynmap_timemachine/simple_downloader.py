@@ -9,7 +9,7 @@ headers = {
 def download(url, binary=False):
     logging.debug('download: %s', url)
 
-    response = requests.get(url, headers=headers)
+    response = requests.get(url, headers=headers, timeout=30)
 
     if response.status_code == requests.codes.ok:
         if binary:
