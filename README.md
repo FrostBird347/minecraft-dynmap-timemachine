@@ -25,6 +25,8 @@ List of all parameter is as follows:
     
     optional arguments:
       -h, --help            show this help message and exit
+      -d, --force-day       download alternate day version of a map
+                                (this option will cause the download to fail if the map isn't a daynamic day/night map)
       --list-worlds         list available worlds from this Dynmap server and exit
       --list-maps           list available maps for this world and exit
       -t [THRESHOLD], --threshold [THRESHOLD]
