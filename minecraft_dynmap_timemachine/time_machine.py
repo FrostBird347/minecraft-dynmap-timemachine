@@ -35,20 +35,25 @@ class TimeMachine(object):
                 logging.info('tile %d/%d [%d, %d]', processed, total_tiles, x, y)
 
                 failedDownload = True
+                skipTile = False
                 while failedDownload:
                     try:
                         img_data = simple_downloader.download(img_url, True)
                         failedDownload = False
                     except Exception as e:
                         logging.info('Unable to download "%s": %s', img_url, str(e))
+                        if str(e) == '404':
+                            failedDownload = False
+                            skipTile = True
                         continue
 
-                stream = io.BytesIO(img_data)
-                im = Image.open(stream)
+                if not skipTile:
+                    stream = io.BytesIO(img_data)
+                    im = Image.open(stream)
 
-                box = (int(abs(x - from_tile.x) * 128 / zoomed_scale), int((abs(to_tile.y - y) - zoomed_scale) * 128 / zoomed_scale))
-                logging.debug('place to [%d, %d]', box[0], box[1])
-                dest_img.paste(im, box)
+                    box = (int(abs(x - from_tile.x) * 128 / zoomed_scale), int((abs(to_tile.y - y) - zoomed_scale) * 128 / zoomed_scale))
+                    logging.debug('place to [%d, %d]', box[0], box[1])
+                    dest_img.paste(im, box)
 
                 # avoid throttle limit, don't overload the server
                 time.sleep(float(pause))

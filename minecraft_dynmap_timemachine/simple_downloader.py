@@ -22,6 +22,6 @@ def download(url, binary=False):
 
         logging.debug('length: %.2f KB', len(data) / 1000.0)
     else:
-        raise Exception()
+        raise Exception(response.status_code)
 
     return data
