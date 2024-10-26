@@ -141,9 +141,9 @@ class Map(object):
         chunk_y = math.floor(t_loc.y / 32.0)
         dashes = ('' if zoom == 0 else ('z' * zoom) + '_')
 
-        image_url = '/tiles/%s/%s/%d_%d/%s%d_%d.png' % (self._world, self.prefix, chunk_x, chunk_y, dashes, t_loc.x, t_loc.y)
+        image_url = '/tiles/%s/%s/%d_%d/%s%d_%d.%s' % (self._world, self.prefix, chunk_x, chunk_y, dashes, t_loc.x, t_loc.y, self.format)
         if force_day:
-            image_url = '/tiles/%s/%s_day/%d_%d/%s%d_%d.png' % (self._world, self.prefix, chunk_x, chunk_y, dashes, t_loc.x, t_loc.y)
+            image_url = '/tiles/%s/%s_day/%d_%d/%s%d_%d.%s' % (self._world, self.prefix, chunk_x, chunk_y, dashes, t_loc.x, t_loc.y, self.format)
         return image_url
 
     @property
@@ -161,6 +161,13 @@ class Map(object):
     @property
     def title(self):
         return self._config['title']
+
+    @property
+    def format(self):
+        try:
+            return self._config['image-format']
+        except:
+            return 'png'
 
     @property
     def worldtomap(self):
