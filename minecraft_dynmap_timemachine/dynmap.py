@@ -41,7 +41,11 @@ class DynMap(object):
 
     def _download_config_urls(self):
         """DynMap configuration"""
-        return simple_downloader.download(self.url + '/' + 'standalone/config.js')
+        try:
+            return simple_downloader.download(self.url + '/' + 'standalone/config.js')
+        except:
+            # b1.7.3 compat
+            return simple_downloader.download(self.url + '/' + 'config.js')
 
     @staticmethod
     def parse_config_urls_string(jsonlike_str):
@@ -52,7 +56,13 @@ class DynMap(object):
         repl = lambda match: '"{}":'.format(match.group(1))
         json_str = re.sub(pattern, repl, m.group(1))
         #print json_str
-        return json.loads(json_str.replace('\'', '"'))
+        
+        try:
+            return json.loads(json_str.replace('\'', '"'))
+        except:
+            # b1.7.3 compat
+            # TODO: actually properly parse the config instead of using a hardcoded config
+            return json.loads("{\n'configuration': 'up/configuration',\n'update': 'up/world/{world}/{timestamp}'\n,'sendmessage': 'up/sendmessage',\n'tiles': 'tiles/'\n}".replace('\'', '"'))
 
     @property
     def urls(self):
