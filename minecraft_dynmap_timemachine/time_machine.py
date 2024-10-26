@@ -45,6 +45,9 @@ class TimeMachine(object):
                         if str(e) == '404':
                             failedDownload = False
                             skipTile = True
+                        else:
+                            # avoid throttle limit, don't overload the server
+                            time.sleep(float(pause))
                         continue
 
                 if not skipTile:
